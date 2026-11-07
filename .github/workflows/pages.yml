@@ -1,0 +1,27 @@
+# Runs the tests and publishes public/ with GitHub Pages on every push to main.
+name: pages
+on:
+  push: { branches: [main] }
+  workflow_dispatch:
+permissions: { pages: write, id-token: write, contents: read }
+concurrency: { group: pages, cancel-in-progress: true }
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: '${{ steps.deploy.outputs.page_url }}' }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node --test test/*.test.mjs
+      # GitHub Pages lets browsers keep files for 10 minutes; a new query string makes them fetch the new scripts and styles.
+      - run: |
+          v=${GITHUB_SHA::8}
+          sed -i "s#\(css/style\.css\|js/game\.js\)#&?v=$v#" public/index.html
+          sed -i "s#from '\./\(logic\|art\)\.js'#from './\1.js?v=$v'#" public/js/game.js
+          sed -i "s#url(fonts\.css)#url(fonts.css?v=$v)#" public/css/style.css
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: public }
+      - id: deploy
+        uses: actions/deploy-pages@v4

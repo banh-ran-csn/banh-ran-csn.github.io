@@ -1,0 +1,110 @@
+@import url(fonts.css);
+/* One 16:9 screen in a cozy sweets-shop style: cream paper panels with wooden-brown borders, dark brown text,
+   an orange main button, yellow highlights for answers. --u is 1% of the stage width, so everything scales
+   like a slide. Text: Baloo 2 (Vietnamese). Numbers and short Latin labels: Press Start 2P. */
+:root {
+  --paper: #fff6e2;
+  --paper-2: #f3dfb8;
+  --wood: #7a4a26;
+  --ink: #4a2c12;
+  --orange: #ffa62b;
+  --orange-d: #b85c00;
+  --hi: #ffd84d;
+  --red: #c2410c;
+  --soft: #8a6a4a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #2b1a0c; overflow: hidden; }
+body { display: grid; place-items: center; font-family: 'Baloo 2', system-ui, sans-serif; font-weight: 700; color: var(--ink); }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:disabled { cursor: default; }
+[hidden] { display: none !important; }
+sub, sup { font-size: 0.62em; line-height: 0; }
+
+#stage {
+  --u: min(1vw, 1.7778vh);
+  position: relative; width: calc(var(--u) * 100); height: calc(var(--u) * 56.25); overflow: hidden;
+  background: #fbecd0; font-size: calc(var(--u) * 2.2); line-height: 1.2;
+}
+#scene { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
+#overlay { position: absolute; inset: 0; pointer-events: none; }
+.num { font-family: 'Press Start 2P', monospace; font-weight: 400; }
+
+/* Paper panel with a wooden frame (pickers, dialog) */
+.box {
+  position: absolute; background: var(--paper); border: calc(var(--u) * 0.35) solid var(--wood); border-radius: calc(var(--u) * 1);
+  box-shadow: inset 0 0 0 calc(var(--u) * 0.25) #fffbf0, 0 calc(var(--u) * 0.45) 0 rgba(74, 44, 18, 0.35);
+}
+
+/* Top bar: just the u1 and q pickers, and full screen */
+#hud { position: absolute; left: 1.4%; right: 1.4%; top: 1.4%; display: flex; align-items: flex-start; justify-content: space-between; pointer-events: none; }
+#hud > * { pointer-events: auto; }
+.params { position: static; display: flex; gap: calc(var(--u) * 2.2); padding: calc(var(--u) * 0.45) calc(var(--u) * 1.2) calc(var(--u) * 0.65); }
+.param { display: flex; align-items: center; gap: 0.4em; }
+.param .lbl { font-weight: 800; font-size: calc(var(--u) * 2.1); }
+.opts { display: flex; gap: 0.3em; }
+.opt {
+  font-family: 'Press Start 2P', monospace; font-size: calc(var(--u) * 1.25); padding: 0.3em 0.4em; background: #fffbf0; color: var(--ink);
+  border: calc(var(--u) * 0.22) solid var(--wood); border-radius: calc(var(--u) * 0.4); box-shadow: 0 calc(var(--u) * 0.28) 0 var(--wood);
+}
+.opt.on { background: var(--orange); }
+.opt:active:not(:disabled) { transform: translateY(calc(var(--u) * 0.25)); box-shadow: none; }
+.opt:disabled { opacity: 0.5; }
+.sysbtn { display: grid; place-items: center; width: calc(var(--u) * 3.4); height: calc(var(--u) * 3.4); background: var(--paper); color: var(--wood); border: calc(var(--u) * 0.22) solid var(--wood); border-radius: calc(var(--u) * 0.5); box-shadow: 0 calc(var(--u) * 0.25) 0 var(--wood); padding: 0; }
+.sysbtn svg { width: 58%; height: 58%; fill: currentColor; shape-rendering: crispEdges; }
+.sysbtn:active { transform: translateY(calc(var(--u) * 0.25)); box-shadow: none; }
+
+/* Labels over the shop (positions set in game.js from canvas coordinates) */
+.lab { position: absolute; transform: translate(-50%, 0); text-align: center; white-space: nowrap; }
+.st-count {
+  font-weight: 800; font-size: calc(var(--u) * 2); line-height: 1; background: #fffbf0; border: calc(var(--u) * 0.2) solid var(--wood);
+  border-radius: calc(var(--u) * 0.5); padding: 0.3em 0.55em 0.25em; box-shadow: 0 calc(var(--u) * 0.25) 0 rgba(74, 44, 18, 0.3);
+}
+.st-count .num { font-size: calc(var(--u) * 2); }
+.st-count.unknown .num { color: var(--red); }
+.st-f { font-weight: 800; font-size: calc(var(--u) * 1.9); color: var(--red); animation: pop 0.3s steps(3); }
+.st-more { font-weight: 800; font-size: calc(var(--u) * 1.15); color: var(--hi); background: var(--ink); border-radius: calc(var(--u) * 0.3); padding: 0 0.4em; }
+.ring-tag {
+  font-family: 'Press Start 2P', monospace; font-weight: 400; font-size: calc(var(--u) * 1.4); color: var(--ink); background: var(--orange);
+  border: calc(var(--u) * 0.2) solid var(--ink); border-radius: 1em; padding: 0.3em 0.45em;
+}
+.ring-tag.boom { animation: boom 0.6s steps(4); }
+.ring-num {
+  font-family: 'Press Start 2P', monospace; font-weight: 400; font-size: calc(var(--u) * 1.4); color: #fff; background: var(--red);
+  border: calc(var(--u) * 0.2) solid var(--ink); border-radius: 50%; padding: 0.35em 0.45em; animation: pop 0.3s steps(3);
+}
+@keyframes pop { from { transform: translate(-50%, 0) scale(0.5); } }
+@keyframes boom { 40% { transform: translate(-50%, -20%) scale(1.7); } }
+.st-count.fresh .num { animation: popInline 0.35s steps(3); display: inline-block; }
+@keyframes popInline { from { transform: scale(0.4); } }
+
+/* Dialog box */
+#dialog { left: 1.4%; right: 1.4%; bottom: 1.8%; height: 23.5%; display: flex; gap: calc(var(--u) * 1.6); padding: calc(var(--u) * 1) calc(var(--u) * 1.6); }
+.say { flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: center; font-size: calc(var(--u) * 2.3); line-height: 1.2; }
+.say .in { display: flex; flex-direction: column; gap: 0.3em; }
+.say.center { align-items: center; } /* one formula: in the middle of the white space left of the buttons */
+.say.middle .in { align-items: center; text-align: center; }
+.say p { margin: 0; }
+.say b { color: var(--red); font-weight: 800; }
+.say .q::before { content: ''; display: inline-block; width: 0.42em; height: 0.42em; background: var(--orange); border: calc(var(--u) * 0.15) solid var(--ink); margin: 0 0.45em 0.12em 0; vertical-align: middle; }
+.say .ans { color: var(--red); font-weight: 800; white-space: nowrap; margin-left: 0.35em; }
+.say .ans.big { display: inline-block; font-size: 1.45em; color: var(--ink); background: var(--hi); border: calc(var(--u) * 0.22) solid var(--ink); border-radius: calc(var(--u) * 0.4); padding: 0 0.4em; margin-top: 0.1em; }
+.say .note { color: var(--red); font-size: 0.8em; }
+.say .small { font-size: 0.78em; color: var(--soft); }
+.controls { width: 22%; display: flex; flex-direction: column; justify-content: center; gap: calc(var(--u) * 1); }
+.controls .row { display: flex; gap: calc(var(--u) * 0.8); }
+.btn {
+  flex: 1; font-weight: 800; font-size: calc(var(--u) * 1.5); line-height: 1.15; padding: 0.4em 0.5em; background: var(--paper-2); color: var(--ink);
+  border: calc(var(--u) * 0.25) solid var(--wood); border-radius: calc(var(--u) * 0.6); box-shadow: 0 calc(var(--u) * 0.35) 0 var(--wood);
+}
+.btn.main {
+  flex: none; font-size: calc(var(--u) * 2.2); padding: 0.4em 0.6em; background: var(--orange); border-color: var(--ink);
+  box-shadow: 0 calc(var(--u) * 0.5) 0 var(--orange-d); min-height: calc(var(--u) * 6.2);
+}
+.btn.main { white-space: nowrap; }
+.btn.main.long { font-size: calc(var(--u) * 1.75); }
+.btn.main::before { content: ''; display: inline-block; border-left: 0.55em solid var(--ink); border-top: 0.34em solid transparent; border-bottom: 0.34em solid transparent; margin-right: 0.45em; vertical-align: 0.05em; }
+.btn:active:not(:disabled) { transform: translateY(calc(var(--u) * 0.35)); box-shadow: none; }
+.btn:disabled { opacity: 0.45; }
+
+@media (prefers-reduced-motion: reduce) { .lab, .st-count .num { animation: none !important; } }

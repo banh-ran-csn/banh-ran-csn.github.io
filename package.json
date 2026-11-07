@@ -1,0 +1,6 @@
+{
+  "name": "canh-cua-nhan-ban",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "node tool/serve.mjs", "test": "node --test test/*.test.mjs" }
+}
