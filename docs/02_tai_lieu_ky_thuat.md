@@ -1,4 +1,4 @@
-# Vòng thần kỳ nhân bản bánh rán: tài liệu kỹ thuật
+# Vòng nhân bản bánh rán: tài liệu kỹ thuật
 
 ## Chạy và kiểm thử
 

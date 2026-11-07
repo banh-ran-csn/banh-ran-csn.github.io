@@ -1,4 +1,4 @@
-# Vòng thần kỳ nhân bản bánh rán: tổng quan
+# Vòng nhân bản bánh rán: tổng quan
 
 ## Mục đích
 

@@ -1,4 +1,4 @@
-# Vòng thần kỳ nhân bản bánh rán (bản demo)
+# Vòng nhân bản bánh rán (bản demo)
 
 Trò chơi pixel một màn chiếu duy nhất, để khám phá công thức số hạng tổng quát của cấp số nhân. Trong một tiệm bánh nhỏ, Doraemon đeo balo đựng bánh rán, đi từ ô 1 đến ô 5 (5 kệ bánh). Giữa hai ô có một vòng thần kỳ, và qua mỗi vòng số bánh nhân lên q lần. Số bánh của mỗi ô hiện trên kệ gỗ treo tường phía trên ô. Phong cách: màu kem và gỗ ấm, khung chữ bo tròn viền nâu, chữ trên màn hình ở mức tối thiểu. Sau ô 4 (ô 5 là tùy chọn), trò chơi khái quát lên ô n: n − 1 vòng, rồi uₙ = u₁·qⁿ⁻¹. Ý tưởng gốc là của giáo viên, ở `~/Prompt_Web_Doraemon_Canh_Cua_Nhan_Ban_Cap_So_Nhan.md`. Trong game, "phòng" đổi thành "ô" và "cánh cửa" đổi thành "vòng thần kỳ"; câu hỏi vẫn giữ nguyên ý. Các nút: Bắt đầu, Đi, Hiện công thức, Khái quát đến ô thứ n, Hiện gợi ý, Kết luận, Làm lại.
 

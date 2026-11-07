@@ -1,4 +1,4 @@
-// Vòng thần kỳ nhân bản bánh rán: one projected screen, driven by the teacher (or a student at the board).
+// Vòng nhân bản bánh rán: one projected screen, driven by the teacher (or a student at the board).
 // In a small sweets shop, Doraemon walks from station 1 to station 5 (a wall shelf each), carrying a sack of
 // dorayaki in his backpack; each magic ring on the way multiplies the cakes by q. The canvas draws the shop in 384×216 logical
 // pixels at 3 device pixels each, so Doraemon's art keeps every one of its pixels; HTML on top carries the text.
