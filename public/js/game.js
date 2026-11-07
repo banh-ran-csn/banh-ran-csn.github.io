@@ -185,14 +185,17 @@ function drawHero(pose) {
   const n = carried();
   const bw = 16 + Math.min(4, Math.round(Math.log2(n))); // the bag fills out a little as the cakes multiply
   const bh = Math.round(bw * 1.3);
-  const bx = Math.round(sx(13) - bw); // on his back: it shows on his left, he walks to the right
-  const by = Math.round(sy(21));
+  // Snapped to device pixels (1/S), the same grid the sprite is drawn on, so the bag rises, lands and breathes
+  // with him; rounding to whole logical pixels made it lag behind or stay put on small bounces.
+  const snap = (v) => Math.round(v * S) / S;
+  const bx = snap(sx(13)) - bw; // on his back: it shows on his left, he walks to the right
+  const by = snap(sy(21));
   const peek = n === 1 ? [0.1] : n <= 4 ? [-0.05, 0.3] : [-0.1, 0.2, 0.45];
   peek.forEach((f, i) => blit(img.cake, bx + bw * f, by - CAKE_H + 5 - (i % 2) * 2, ART.cake.k));
   drawBackpack(ctx, bx, by, bw, bh);
   blit(hero, x0, y0, 1, null, [dw, dh]);
   ctx.fillStyle = '#9c2420'; // the straps
-  for (const x of [10, 30]) ctx.fillRect(Math.round(sx(x)), Math.round(sy(32)), 1, Math.round(8 * HS * (1 - pose.squash)));
+  for (const x of [10, 30]) ctx.fillRect(snap(sx(x)), snap(sy(32)), 1, snap(8 * HS * (1 - pose.squash)));
 }
 
 function render(t) {
@@ -273,7 +276,7 @@ function say() {
   const big = (t) => `<p><span class="ans big">${fmt(t)}</span></p>`;
   let h = note ? `<p class="note">${note}</p>` : '';
   if (s.id === 'setup') {
-    h += '<p>Qua mỗi vòng thần kỳ, số bánh nhân lên <b>q</b> lần.</p>';
+    h += '<p>Qua mỗi vòng thần kỳ, số bánh sẽ được nhân lên <b>q</b> lần.</p>';
   } else if (s.id === 'ask' || s.id === 'open') {
     const info = questionsFor(s.k);
     const ans = (a) => (s.id === 'open' ? `<span class="ans">→ ${fmt(a)}</span>` : '');
@@ -282,18 +285,13 @@ function say() {
   } else if (s.id === 'formula') {
     h += big(formulaFor(s.k, u1, q).split(' = ').slice(0, 2).join(' = '));
   } else if (s.id === 'general-ask' || s.id === 'general-hint') {
-    h += `<p class="q">Từ ô 1 sang ô n, số bánh cần đi qua bao nhiêu vòng?${s.id === 'general-hint' ? '<span class="ans">→ n − 1 vòng</span>' : ''}</p>`
-      + '<p class="q">Vậy số bánh ở ô n được tính như thế nào từ u<sub>1</sub>?</p>';
+    h += `<p class="q">Từ ô thứ 1 sang ô thứ n, số bánh cần đi qua bao nhiêu vòng thần kỳ?${s.id === 'general-hint' ? '<span class="ans">→ n − 1 vòng</span>' : ''}</p>`
+      + '<p class="q">Vậy số bánh ở ô thứ n gấp mấy lần số bánh ban đầu?</p>';
   } else if (s.id === 'general-conclusion') {
     h += big('uₙ = u₁·qⁿ⁻¹');
-  } else if (s.id === 'summary') {
-    h += big('uₙ = u₁·qⁿ⁻¹')
-      + '<p>Từ ô 1 đến ô n có n − 1 vòng; mỗi vòng nhân số bánh với q.</p>'
-      + '<p class="small">Đây là mô hình trực quan với q nguyên dương.</p>';
   }
   const box = $('#say');
   box.classList.toggle('center', s.id === 'formula' || s.id === 'general-conclusion');
-  box.classList.toggle('middle', s.id === 'summary');
   box.innerHTML = `<div class="in">${h}</div>`;
   fitSay();
 }
@@ -333,7 +331,7 @@ function updateUI() {
   const nb = $('#bNext');
   nb.hidden = !lbl;
   nb.textContent = lbl || '';
-  nb.classList.toggle('long', (lbl || '').length > 10); // keeps "Khái quát đến ô n" on one line
+  nb.classList.toggle('long', (lbl || '').length > 10); // keeps "Khái quát đến ô thứ n" on one line
   nb.disabled = !!anim;
   $('#bGeneral').hidden = !(step >= CAN_GENERALIZE_AT && step < GENERAL_FROM - 1); // on the last step the main button says it
   $('#bGeneral').disabled = !!anim;
@@ -371,7 +369,7 @@ function setParam(name, v) {
   if (anim) return;
   const before = name === 'u1' ? u1 : q;
   if (name === 'u1') u1 = v; else q = v;
-  if (step > 0 && before !== v) restart(`Đã đổi ${name === 'u1' ? 'u<sub>1</sub>' : 'q'} = ${v}: bắt đầu lại từ ô 1.`);
+  if (step > 0 && before !== v) restart(`Đã đổi ${name === 'u1' ? 'u<sub>1</sub>' : 'q'} = ${v}: bắt đầu lại từ ô thứ 1.`);
   else updateUI();
 }
 

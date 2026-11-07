@@ -83,7 +83,6 @@ sub, sup { font-size: 0.62em; line-height: 0; }
 .say { flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: center; font-size: calc(var(--u) * 2.3); line-height: 1.2; }
 .say .in { display: flex; flex-direction: column; gap: 0.3em; }
 .say.center { align-items: center; } /* one formula: in the middle of the white space left of the buttons */
-.say.middle .in { align-items: center; text-align: center; }
 .say p { margin: 0; }
 .say b { color: var(--red); font-weight: 800; }
 .say .q::before { content: ''; display: inline-block; width: 0.42em; height: 0.42em; background: var(--orange); border: calc(var(--u) * 0.15) solid var(--ink); margin: 0 0.45em 0.12em 0; vertical-align: middle; }

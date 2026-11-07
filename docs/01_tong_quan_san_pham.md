@@ -22,8 +22,8 @@ Mỗi lần bấm nút cam (hoặc phím →) là một bước. Không có gì 
    - hai câu hỏi gợi mở của giáo viên (vòng sắp đi qua nhấp nháy);
    - **Đi**: Doraemon qua vòng, số bánh và câu trả lời mong đợi hiện ra;
    - **Hiện công thức**: ví dụ u₃ = u₁·q². Dưới kệ ghi "= u₁·q²" và dòng này ở lại đến cuối.
-3. Sau ô 4 có thể **Khái quát đến ô n** (ô 5 là tùy chọn): **Hiện gợi ý** (các vòng đánh số 1–4, đáp án n − 1 vòng) rồi **Kết luận** uₙ = u₁·qⁿ⁻¹.
-4. **Kết thúc**: công thức, câu chốt "Từ ô 1 đến ô n có n − 1 vòng; mỗi vòng nhân số bánh với q.", và ghi chú "mô hình trực quan với q nguyên dương".
+3. Sau ô 4 có thể **Khái quát đến ô thứ n** (ô 5 là tùy chọn): **Hiện gợi ý** (các vòng đánh số 1–4, đáp án n − 1 vòng) rồi **Kết luận** uₙ = u₁·qⁿ⁻¹.
+4. **Kết luận** là màn cuối (không còn màn chốt sau nút Kết thúc). Câu hỏi gọi "ô thứ k"; đáp án số lần gấp ghi q¹ lần, q² lần…
 
 | Trường hợp kiểm tra | Kết quả |
 |---|---|
@@ -51,6 +51,5 @@ Phím tắt:
 - **Hình Doraemon có bản quyền**, do người dùng cung cấp ở `~/doraemon_pixel_art/`. Game không tự vẽ Doraemon và không lấy hình trên mạng.
 - **Tỉ lệ thống nhất:** mọi thứ cùng một cỡ điểm ảnh. Doraemon (thu còn 90%) thấp hơn vòng, bánh nhỏ cùng cỡ với kệ. Viền các phần tự vẽ dùng màu viền của bộ hình.
 - **Balo đỏ** thay cho bao bánh kéo lê; balo phồng lên khi bánh nhân lên.
-- **Tên nút:** Bắt đầu, Đi, Hiện công thức, Khái quát đến ô n, Hiện gợi ý, Kết luận, Kết thúc, Làm lại.
+- **Tên nút:** Bắt đầu, Đi, Hiện công thức, Khái quát đến ô thứ n, Hiện gợi ý, Kết luận, Làm lại.
 
-![Kết thúc](anh/5_ket_thuc.png)

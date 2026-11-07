@@ -24,16 +24,16 @@ export function drawPlan(total) {
 export function questionsFor(k) {
   const n = doors(k);
   const fixed = {
-    2: ['Từ ô 1 sang ô 2, số bánh đi qua bao nhiêu vòng thần kỳ?', 'Vậy số bánh ở ô 2 gấp mấy lần số bánh ban đầu?'],
-    3: ['Từ ô 1 sang ô 3, số bánh đã đi qua bao nhiêu vòng thần kỳ?', 'Sau mỗi vòng số bánh nhân với q, vậy tổng cộng nhân với bao nhiêu?'],
-    4: ['Từ ô 1 sang ô 4, số bánh đã đi qua bao nhiêu vòng?', 'Số bánh ở ô 4 bằng số bánh ban đầu nhân với gì?'],
-    5: ['Từ ô 1 sang ô 5, số bánh đã đi qua bao nhiêu vòng?', 'Số bánh ở ô 5 bằng số bánh ban đầu nhân với gì?'],
+    2: 'Từ ô thứ 1 sang ô thứ 2, số bánh đi qua bao nhiêu vòng thần kỳ?',
+    3: 'Từ ô thứ 1 sang ô thứ 3, số bánh đã đi qua bao nhiêu vòng thần kỳ?',
+    4: 'Từ ô thứ 1 sang ô thứ 4, số bánh đã đi qua bao nhiêu vòng thần kỳ?',
+    5: 'Từ ô thứ 1 sang ô thứ 5, số bánh đã đi qua bao nhiêu vòng thần kỳ?',
   };
   return {
-    questions: fixed[k],
+    questions: [fixed[k], `Vậy số bánh ở ô thứ ${k} gấp mấy lần số bánh ban đầu?`],
     doors: n,
     answerDoors: `${n} vòng`,
-    answerFactor: n === 1 ? 'q lần' : `q${sup(n)}`,
+    answerFactor: `q${sup(n)} lần`, // q¹ lần, q² lần…: the exponent is the number of rings
   };
 }
 
@@ -53,18 +53,18 @@ export function formulaFor(k, u1, q) {
 
 // The flow, all on one screen. Each step is one press of ▶ (or →); nothing moves on by itself.
 //   setup → for each station 2..5: ask → open (Doraemon walks through the ring) → formula
-//   → general: ask → hint (n−1 rings) → conclusion → summary.
+//   → general: ask → hint (n−1 rings) → conclusion (the last screen).
 // After station 4's formula the teacher may jump to the general step (station 5 is optional).
 export function buildSteps() {
   const steps = [{ id: 'setup' }];
   for (let k = 2; k <= ROOMS; k++) steps.push({ id: 'ask', k }, { id: 'open', k }, { id: 'formula', k });
-  steps.push({ id: 'general-ask' }, { id: 'general-hint' }, { id: 'general-conclusion' }, { id: 'summary' });
+  steps.push({ id: 'general-ask' }, { id: 'general-hint' }, { id: 'general-conclusion' });
   return steps;
 }
 
 export const STEPS = buildSteps();
 export const GENERAL_FROM = STEPS.findIndex((s) => s.id === 'general-ask');
-// the step from which "Khái quát đến ô n" may be pressed: station 4's formula
+// the step from which "Khái quát đến ô thứ n" may be pressed: station 4's formula
 export const CAN_GENERALIZE_AT = STEPS.findIndex((s) => s.id === 'formula' && s.k === 4);
 
 // Highest station whose count is visible at step i (station 1 from the start).
@@ -93,9 +93,8 @@ export function nextLabel(i) {
     ask: i === 0 ? 'Bắt đầu' : 'Đi',
     open: 'Đi',
     formula: 'Hiện công thức',
-    'general-ask': 'Khái quát đến ô n',
+    'general-ask': 'Khái quát đến ô thứ n',
     'general-hint': 'Hiện gợi ý',
     'general-conclusion': 'Kết luận',
-    summary: 'Kết thúc',
   }[next.id];
 }

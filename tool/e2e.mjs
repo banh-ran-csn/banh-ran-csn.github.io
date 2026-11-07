@@ -51,7 +51,7 @@ try {
   // Case 1 and case 7: u1 = 1, q = 2; every result only after its own press.
   await press(p);
   await untilStep(p, 'ask', 2);
-  assert.match(await say(p), /Từ ô 1 sang ô 2, số bánh đi qua bao nhiêu vòng thần kỳ\?/);
+  assert.match(await say(p), /Từ ô thứ 1 sang ô thứ 2, số bánh đi qua bao nhiêu vòng thần kỳ\?[\s\S]*Vậy số bánh ở ô thứ 2 gấp mấy lần số bánh ban đầu\?/);
   assert.equal(/→/.test(await say(p)), false, 'no expected answer before the press');
   assert.deepEqual(await counts(p), ['1', '?', '?', '?', '?']);
   await p.shot(`${OUT}/02_hoi_tram_2.png`);
@@ -63,7 +63,7 @@ try {
   await untilStep(p, 'open', 2);
   assert.equal((await state(p)).s, 'open', 'presses during the walk do not skip a step');
   assert.deepEqual(await counts(p), ['1', '2', '?', '?', '?']);
-  assert.match(await say(p), /→ 1 vòng[\s\S]*→ q lần/);
+  assert.match(await say(p), /→ 1 vòng[\s\S]*→ q[¹1] lần/);
   assert.deepEqual(await shownFormulas(p), [], 'formula still hidden after walking through');
   await press(p);
   await untilStep(p, 'formula', 2);
@@ -85,7 +85,7 @@ try {
     if (r === 3) await press(p);
   }
   assert.deepEqual(await counts(p), ['1', '2', '4', '8', '?']);
-  assert.equal(await p.eval(`!document.querySelector('#bGeneral').hidden`), true, '"Khái quát đến ô n" after station 4');
+  assert.equal(await p.eval(`!document.querySelector('#bGeneral').hidden`), true, '"Khái quát đến ô thứ n" after station 4');
   await press(p);
   await untilStep(p, 'ask', 5);
   await press(p);
@@ -103,6 +103,7 @@ try {
   const ringNums = () => p.eval(`[...document.querySelectorAll('.ring-num')].filter((e) => !e.hidden).length`);
   assert.equal(await ringNums(), 0);
   assert.equal(/n − 1 vòng/.test(await say(p)), false);
+  assert.match(await say(p), /Từ ô thứ 1 sang ô thứ n[\s\S]*Vậy số bánh ở ô thứ n gấp mấy lần số bánh ban đầu\?/, 'n is reached by the same questions');
   await p.shot(`${OUT}/06_khai_quat.png`);
   await press(p);
   await untilStep(p, 'general-hint');
@@ -113,12 +114,8 @@ try {
   await untilStep(p, 'general-conclusion');
   assert.match(await say(p), /un = u1·qn−1/);
   await p.shot(`${OUT}/07_ket_luan.png`);
-  await press(p);
-  await untilStep(p, 'summary');
-  assert.match(await say(p), /un = u1·qn−1 Từ ô 1 đến ô n có n − 1 vòng; mỗi vòng nhân số bánh với q\. Đây là mô hình trực quan với q nguyên dương\./);
-  assert.deepEqual(await shownFormulas(p), ['= u1·q', '= u1·q2', '= u1·q3', '= u1·q4'], 'the stations keep the pattern for the summary');
-  assert.equal(await p.eval(`document.querySelector('#bNext').hidden`), true, 'nothing after the summary');
-  await p.shot(`${OUT}/08_chot_kien_thuc.png`);
+  assert.deepEqual(await shownFormulas(p), ['= u1·q', '= u1·q2', '= u1·q3', '= u1·q4'], 'the stations keep the pattern');
+  assert.equal(await p.eval(`document.querySelector('#bNext').hidden`), true, 'the conclusion is the last screen: no "Kết thúc"');
 
   // Case 3 + more than 12 cakes: u1 = 2, q = 3.
   await p.eval(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'r' })); true`);
@@ -137,7 +134,7 @@ try {
   await untilStep(p, 'setup');
   assert.deepEqual(await counts(p), ['2', '?', '?', '?', '?']);
   assert.deepEqual(await shownFormulas(p), []);
-  assert.match(await say(p), /Đã đổi q = 1: bắt đầu lại từ ô 1/);
+  assert.match(await say(p), /Đã đổi q = 1: bắt đầu lại từ ô thứ 1/);
 
   // Case 4: u1 = 3, q = 1: every station keeps the same count, shown as "giữ nguyên".
   await opt(p, 'u1', 3);

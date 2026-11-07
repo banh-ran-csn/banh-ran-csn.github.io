@@ -32,8 +32,10 @@ test('more than 12 cakes: 12 drawn and the rest named, so nobody reads 12 as the
 });
 
 test('the teacher questions keep their meaning (rooms → cells "ô", doors → rings), with the expected answers', () => {
-  assert.deepEqual(questionsFor(2).questions, ['Từ ô 1 sang ô 2, số bánh đi qua bao nhiêu vòng thần kỳ?', 'Vậy số bánh ở ô 2 gấp mấy lần số bánh ban đầu?']);
-  assert.equal(questionsFor(3).answerFactor, 'q²');
+  assert.deepEqual(questionsFor(2).questions, ['Từ ô thứ 1 sang ô thứ 2, số bánh đi qua bao nhiêu vòng thần kỳ?', 'Vậy số bánh ở ô thứ 2 gấp mấy lần số bánh ban đầu?']);
+  assert.equal(questionsFor(2).answerFactor, 'q¹ lần');
+  assert.equal(questionsFor(3).answerFactor, 'q² lần');
+  assert.equal(questionsFor(5).questions[1], 'Vậy số bánh ở ô thứ 5 gấp mấy lần số bánh ban đầu?');
   assert.equal(questionsFor(4).answerDoors, '3 vòng');
 });
 
@@ -48,9 +50,10 @@ test('case 7: every count and formula appears only after its own press; nothing 
   assert.equal(nextLabel(askRoom3 + 1), 'Hiện công thức');
 });
 
-test('the general step comes after room 4 (room 5 optional) and ends with the summary', () => {
+test('the general step comes after room 4 (room 5 optional) and ends on the conclusion', () => {
   assert.deepEqual(STEPS[CAN_GENERALIZE_AT], { id: 'formula', k: 4 });
   assert.equal(STEPS[GENERAL_FROM].id, 'general-ask');
-  assert.deepEqual(STEPS.slice(-4).map((s) => s.id), ['general-ask', 'general-hint', 'general-conclusion', 'summary']);
+  assert.deepEqual(STEPS.slice(-3).map((s) => s.id), ['general-ask', 'general-hint', 'general-conclusion']);
+  assert.equal(nextLabel(STEPS.length - 2), 'Kết luận');
   assert.equal(nextLabel(STEPS.length - 1), null);
 });

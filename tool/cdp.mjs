@@ -11,7 +11,8 @@ export function launch(port = 9231) {
   const chrome = process.env.CHROME;
   if (!chrome) throw new Error('set CHROME to a chrome-headless-shell binary');
   const proc = spawn(chrome, ['--no-sandbox', '--hide-scrollbars', '--enable-unsafe-swiftshader', '--autoplay-policy=no-user-gesture-required',
-    `--remote-debugging-port=${port}`, '--remote-debugging-address=127.0.0.1', 'about:blank'], { stdio: 'ignore' });
+    `--remote-debugging-port=${port}`, '--remote-debugging-address=127.0.0.1',
+    ...(process.env.CHROME_ARGS || '').split(' ').filter(Boolean), 'about:blank'], { stdio: 'ignore' });
   const errors = [];
   const pages = {};
 
