@@ -46,8 +46,8 @@ export const u = (k) => `u${String(k).split('').map((c) => SUB[c]).join('')}`;
 export function formulaFor(k, u1, q) {
   const n = doors(k);
   if (n === 0) return `${u(1)} = ${u1}`;
-  const general = n === 1 ? `${u(1)}·q` : `${u(1)}·q${sup(n)}`;
-  const numbers = n === 1 ? `${u1}·${q}` : `${u1}·${q}${sup(n)}`;
+  const general = `${u(1)}·q${sup(n)}`; // q¹ too: the exponent counts the rings
+  const numbers = `${u1}·${q}${sup(n)}`;
   return `${u(k)} = ${general} = ${numbers} = ${cakes(u1, q, k)}`;
 }
 

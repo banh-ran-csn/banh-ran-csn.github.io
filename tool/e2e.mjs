@@ -67,8 +67,8 @@ try {
   assert.deepEqual(await shownFormulas(p), [], 'formula still hidden after walking through');
   await press(p);
   await untilStep(p, 'formula', 2);
-  assert.deepEqual(await shownFormulas(p), ['= u1·q'], 'under station 2: = u1·q');
-  assert.equal(await say(p), 'u2 = u1·q', 'the dialog shows only the formula');
+  assert.deepEqual(await shownFormulas(p), ['= u1·q1'], 'under station 2: = u1·q¹');
+  assert.equal(await say(p), 'u2 = u1·q1', 'the dialog shows only the formula');
   assert.equal(await formulaCentred(p), true, 'the formula sits in the middle of the white space left of the buttons');
   await p.shot(`${OUT}/04_cong_thuc_tram_2.png`);
   await press(p);
@@ -114,7 +114,7 @@ try {
   await untilStep(p, 'general-conclusion');
   assert.match(await say(p), /un = u1·qn−1/);
   await p.shot(`${OUT}/07_ket_luan.png`);
-  assert.deepEqual(await shownFormulas(p), ['= u1·q', '= u1·q2', '= u1·q3', '= u1·q4'], 'the stations keep the pattern');
+  assert.deepEqual(await shownFormulas(p), ['= u1·q1', '= u1·q2', '= u1·q3', '= u1·q4'], 'the stations keep the pattern');
   assert.equal(await p.eval(`document.querySelector('#bNext').hidden`), true, 'the conclusion is the last screen: no "Kết thúc"');
 
   // Case 3 + more than 12 cakes: u1 = 2, q = 3.

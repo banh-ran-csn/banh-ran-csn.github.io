@@ -20,7 +20,7 @@ test('case 5: from room 1 to room 1 there are 0 doors and u1 = u1·q⁰', () => 
 
 test('room k is reached through k−1 doors, and the formulas use that exponent', () => {
   assert.deepEqual([2, 3, 4, 5].map(doors), [1, 2, 3, 4]);
-  assert.equal(formulaFor(2, 1, 2), 'u₂ = u₁·q = 1·2 = 2');
+  assert.equal(formulaFor(2, 1, 2), 'u₂ = u₁·q¹ = 1·2¹ = 2');
   assert.equal(formulaFor(3, 1, 2), 'u₃ = u₁·q² = 1·2² = 4');
   assert.equal(formulaFor(4, 2, 3), 'u₄ = u₁·q³ = 2·3³ = 54');
   assert.equal(u('n'), 'uₙ');
